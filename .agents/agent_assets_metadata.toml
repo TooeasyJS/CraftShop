@@ -1,0 +1,50 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "5ss1wzXMrfCeugmwATZgK"
+uri = "file://artifacts/craft-shop/src/assets/hero.png"
+type = "image"
+title = "Minecraft glowing chest hero"
+
+[[generated]]
+id = "xOA4ISY7wzTtVoBAv239h"
+uri = "file://artifacts/craft-shop/src/assets/product-icon.png"
+type = "image"
+title = "Minecraft avatar profile picture"
+
+[[generated]]
+id = "aQ63DLQ5u-EwvHbYtymHE"
+uri = "file://artifacts/craft-shop/src/assets/product-banner.png"
+type = "image"
+title = "Minecraft channel banner"
+
+[[generated]]
+id = "MM8SLy3zW3S_YYtcJPqFa"
+uri = "file://artifacts/craft-shop/src/assets/product-endscreen.png"
+type = "image"
+title = "Minecraft end screen"
+
+[[generated]]
+id = "ZZfx_tiZJqNs696NhmjFq"
+uri = "file://artifacts/craft-shop/src/assets/product-thumbnail.png"
+type = "image"
+title = "Minecraft YouTube thumbnail"
+
+[[generated]]
+id = "d3OdTUh2J_yk1dBNLB1Af"
+uri = "file://artifacts/craft-shop/src/assets/team-craftgirl.png"
+type = "image"
+title = "Pixel art girl avatar"
+
+[[generated]]
+id = "xH9vGcmBLFmbYjl030SR-"
+uri = "file://artifacts/craft-shop/src/assets/team-soulfelps.png"
+type = "image"
+title = "Pixel art boy avatar"
+
+[[generated]]
+id = "X5-4oLkrTqShzOG_SfIGH"
+uri = "file://artifacts/craft-shop/src/assets/team-azuki.png"
+type = "image"
+title = "Pixel art pizza avatar"
