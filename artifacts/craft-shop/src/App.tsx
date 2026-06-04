@@ -25,6 +25,7 @@ import {
 import NotFound from "@/pages/not-found";
 
 import heroImg from "./assets/hero.png";
+import logoImg from "./assets/logo.png";
 import iconImg from "./assets/product-icon.png";
 import bannerImg from "./assets/product-banner.png";
 import endscreenImg from "./assets/product-endscreen.png";
@@ -191,7 +192,7 @@ function HomePage() {
         
         <div className="flex-1 z-10 w-full max-w-md relative">
           <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full" />
-          <img src={heroImg} alt="Hero" className="w-full h-auto object-cover border-4 border-primary/30 box-glow rotate-2 hover:rotate-0 transition-transform duration-500" />
+          <img src={logoImg} alt="Craft Shop" className="w-full h-auto object-contain drop-shadow-[0_0_60px_rgba(34,197,94,0.6)] hover:scale-105 transition-transform duration-500" />
         </div>
       </div>
 
@@ -344,8 +345,7 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
       {/* Mobile Header */}
       <header className="md:hidden fixed top-0 w-full h-16 bg-[#111811] border-b border-primary/20 z-40 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-primary box-glow" />
-          <span className="font-mono text-sm text-primary text-glow">CRAFT SHOP®</span>
+          <img src={logoImg} alt="Craft Shop" className="w-8 h-8 object-contain" />
         </div>
         <button onClick={() => setSidebarOpen(true)} className="p-2 text-muted-foreground hover:text-white" aria-label="Open menu" data-testid="button-menu">
           <Menu className="w-6 h-6" />
@@ -373,7 +373,7 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
       >
         <div className="p-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary box-glow shrink-0" />
+            <img src={logoImg} alt="Craft Shop" className="w-10 h-10 object-contain shrink-0" />
             <span className="font-mono text-sm tracking-wider text-primary text-glow leading-tight">CRAFT<br/>SHOP®</span>
           </div>
           <button onClick={closeSidebar} className="md:hidden text-muted-foreground hover:text-white" aria-label="Close menu" data-testid="button-close-menu">
