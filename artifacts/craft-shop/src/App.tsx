@@ -169,11 +169,12 @@ function Home() {
 
           <div className="space-y-4">
             {[
-              { name: "Icon (Foto de Perfil)", price: "R$ 25,00" },
-              { name: "Banner de Canal", price: "R$ 45,00" },
-              { name: "Tela Final (End Screen)", price: "R$ 35,00" },
-              { name: "Thumbnail (Capa de Vídeo)", price: "R$ 20,00" },
-              { name: "Combo Inicial (Icon + Banner)", price: "R$ 60,00" },
+              { name: "Icon (Foto de Perfil)", price: "R$ 3,00" },
+              { name: "Banner de Canal", price: "R$ 3,00" },
+              { name: "Tela Final (End Screen)", price: "R$ 4,00" },
+              { name: "Thumbnail (Capa de Vídeo)", price: "R$ 5,00" },
+              { name: "Pacote 3 Thumbnails", price: "R$ 12,50" },
+              { name: "Pacote 3 Icons", price: "R$ 9,00" },
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col sm:flex-row items-center justify-between p-6 bg-card border border-primary/20 hover:border-primary/50 transition-colors">
                 <span className="font-sans text-lg font-bold">{item.name}</span>
