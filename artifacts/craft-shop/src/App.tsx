@@ -77,12 +77,12 @@ const thumbnailVariants: Variant[] = [
 ];
 
 const prices = [
-  { name: "Icon", price: "R$ 3,00" },
-  { name: "Banner", price: "R$ 3,00" },
-  { name: "Tela Final", price: "R$ 4,00" },
-  { name: "Thumbnail", price: "R$ 5,00" },
-  { name: "Pacote 3 Thumbnails", price: "R$ 12,50" },
-  { name: "Pacote 3 Icons", price: "R$ 9,00" },
+  { name: "Icon", desc: "Foto de perfil personalizada em HD", price: "R$ 3,00", img: iconImg, href: "/icons" },
+  { name: "Banner", desc: "Arte épica para a capa do teu canal", price: "R$ 3,00", img: bannerImg, href: "/banners" },
+  { name: "Tela Final", desc: "Template de encerramento para YouTube", price: "R$ 4,00", img: endscreenImg, href: "/tela-final" },
+  { name: "Thumbnail", desc: "Capa chamativa para explodir as tuas views", price: "R$ 5,00", img: thumbnailImg, href: "/thumbnails" },
+  { name: "Pacote 3 Thumbnails", desc: "3 thumbnails com desconto especial", price: "R$ 12,50", img: thumbnailImg, href: "/thumbnails" },
+  { name: "Pacote 3 Icons", desc: "3 icons com desconto especial", price: "R$ 9,00", img: iconImg, href: "/icons" },
 ];
 
 const team = [
@@ -236,13 +236,24 @@ function PricesPage() {
 
       <div className="grid gap-4">
         {prices.map((item, idx) => (
-          <div key={idx} className="flex flex-col sm:flex-row items-center justify-between p-6 bg-[#0f140f] border border-primary/20 hover:border-primary transition-colors box-glow">
-            <div className="flex items-center gap-4 w-full sm:w-auto">
-              <div className="w-2 h-2 bg-primary rounded-full hidden sm:block" />
-              <span className="font-sans text-xl font-bold">{item.name}</span>
+          <div key={idx} data-testid={`price-card-${idx}`} className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-[#0f140f] border border-primary/20 hover:border-primary transition-all duration-300 group overflow-hidden">
+            {/* Product image */}
+            <div className="w-full sm:w-32 h-24 sm:h-20 shrink-0 overflow-hidden border border-primary/20 group-hover:border-primary/50 transition-colors">
+              <img
+                src={item.img}
+                alt={item.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
             </div>
-            
-            <div className="flex items-center gap-6 mt-6 sm:mt-0 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 border-primary/10 pt-4 sm:pt-0">
+
+            {/* Name + description */}
+            <div className="flex-1 text-center sm:text-left">
+              <span className="font-mono text-lg font-bold text-white block">{item.name}</span>
+              <span className="text-sm text-muted-foreground">{item.desc}</span>
+            </div>
+
+            {/* Price + button */}
+            <div className="flex items-center gap-4 shrink-0">
               <span className="font-mono text-primary text-2xl tracking-tight" data-testid={`price-val-${idx}`}>{item.price}</span>
               <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-testid={`link-buy-${idx}`}>
                 <Button data-testid={`button-buy-${idx}`} className="bg-primary/20 text-primary border border-primary/50 hover:bg-primary hover:text-black rounded-none">
@@ -253,6 +264,10 @@ function PricesPage() {
           </div>
         ))}
       </div>
+
+      <p className="mt-8 text-center text-muted-foreground text-sm">
+        Todos os pagamentos e pedidos são feitos direto no Discord.
+      </p>
     </div>
   );
 }
