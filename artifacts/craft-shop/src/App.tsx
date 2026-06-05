@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Switch, Route, Router as WouterRouter, Link, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -21,21 +21,47 @@ import {
   ArrowRight,
   ShieldCheck,
   Zap,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import NotFound from "@/pages/not-found";
 
-import heroImg from "./assets/hero.png";
 import logoImg from "./assets/logo.png";
-import iconImg from "./assets/product-icon.png";
-import bannerImg from "./assets/product-banner.png";
-import endscreenImg from "./assets/product-endscreen.png";
-import thumbnailImg from "./assets/product-thumbnail.png";
+import craftShopLogo from "./assets/file_00000000fe4071f58a65018409e8f59b.png";
+
+// Icons
+import iconImg1 from "./assets/1751653938877.png";
+import iconImg2 from "./assets/1751744805104.png";
+import iconImg3 from "./assets/icon_do_Duo_player_2.png";
+import iconImg4 from "./assets/7_Sem_Titulo_20250729155944.jpg";
+import iconImg5 from "./assets/78_Sem_Titulo_20250915182209.png";
+
+// Banners
+import bannerImg1 from "./assets/banner_do_murilo_the_best_com_camera_raw.png";
+import bannerImg2 from "./assets/177_Sem_Titulo_20251026134328.png";
+import bannerImg3 from "./assets/177_Sem_Titulo2_20251111205209.png";
+import bannerImg4 from "./assets/322_Sem_Titulo_20260105183701.png";
+
+// Tela Final
+import endImg1 from "./assets/tela_final_lazzy.png";
+import endImg2 from "./assets/307_Sem_Titulo_20251224124119.png";
+import endImg3 from "./assets/373_Sem_Titulo_20260220185004.png";
+
+// Thumbnails
+import thumbImg1 from "./assets/143_Sem_Titulo_20251006113653.png";
+import thumbImg2 from "./assets/99_Sem_Titulo_20250924165055.png";
+import thumbImg3 from "./assets/67_Sem_Titulo_20250906201037.png";
+import thumbImg4 from "./assets/87_Sem_Titulo_20250919133559.png";
+import thumbImg5 from "./assets/70_Sem_Titulo_20250912190727.png";
+
+// Team
 import craftgirlImg from "./assets/team-craftgirl.png";
 import soulfelpsImg from "./assets/team-soulfelps.png";
 import azukiImg from "./assets/team-azuki.png";
 
 const queryClient = new QueryClient();
 const DISCORD_LINK = "https://discord.gg/J7bufuWvh";
+const LAUNCH_DATE = new Date("2026-06-20T00:00:00-03:00");
 
 interface Variant {
   id: string;
@@ -47,42 +73,42 @@ interface Variant {
 
 const defaultColors = ["#22c55e", "#ef4444", "#3b82f6", "#a855f7", "#f97316"];
 
-// --- Data ---
 const iconVariants: Variant[] = [
-  { id: "icon-1", name: "Estilo Guerreiro", img: iconImg, colors: defaultColors, description: "Traços marcantes e olhar focado para perfis competitivos." },
-  { id: "icon-2", name: "Estilo Mago", img: iconImg, colors: defaultColors, description: "Aura mística e efeitos mágicos ao redor do personagem." },
-  { id: "icon-3", name: "Estilo Neon", img: iconImg, colors: defaultColors, description: "Cores vibrantes e brilhantes que chamam atenção na timeline." },
-  { id: "icon-4", name: "Estilo Sombra", img: iconImg, colors: defaultColors, description: "Fundo escuro e iluminação dramática." },
-  { id: "icon-5", name: "Estilo Natureza", img: iconImg, colors: defaultColors, description: "Elementos orgânicos e vibes relaxantes." },
+  { id: "icon-1", name: "Pinguim Sombrio", img: iconImg1, colors: defaultColors, description: "Personagem com visual sombrio e chapéu — perfeito para perfis únicos." },
+  { id: "icon-2", name: "Steve Clássico", img: iconImg2, colors: defaultColors, description: "Render clean do Steve em pose natural com fundo vibrante." },
+  { id: "icon-3", name: "Duo Player", img: iconImg3, colors: defaultColors, description: "Ação total com fundo splash — ideal para canais competitivos." },
+  { id: "icon-4", name: "Máscara Fantasma", img: iconImg4, colors: defaultColors, description: "Visual misterioso com máscara de esqueleto e iluminação dramática." },
+  { id: "icon-5", name: "Guerreira Verde", img: iconImg5, colors: defaultColors, description: "Personagem feminina com visual suave e fundo verde neon." },
 ];
 
 const bannerVariants: Variant[] = [
-  { id: "ban-1", name: "Banner Épico", img: bannerImg, colors: defaultColors, description: "Cenário de batalha massivo com teu personagem em destaque." },
-  { id: "ban-2", name: "Banner Neon", img: bannerImg, colors: defaultColors, description: "Cyberpunk blocky com letreiros brilhantes." },
-  { id: "ban-3", name: "Banner Medieval", img: bannerImg, colors: defaultColors, description: "Castelos, espadas e texturas rústicas." },
-  { id: "ban-4", name: "Banner Futurista", img: bannerImg, colors: defaultColors, description: "Naves, lasers e tecnologia alienígena." },
+  { id: "ban-1", name: "Banner Murilo", img: bannerImg1, colors: defaultColors, description: "Arte épica em tons de azul com personagem e redes sociais." },
+  { id: "ban-2", name: "Banner Zard", img: bannerImg2, colors: defaultColors, description: "Banner vermelho geométrico com correntes — estilo agressivo." },
+  { id: "ban-3", name: "Banner Calino", img: bannerImg3, colors: defaultColors, description: "Fundo laranja com hexágonos e personagem 3D em destaque." },
+  { id: "ban-4", name: "Banner Pedro", img: bannerImg4, colors: defaultColors, description: "Arte em variações de cores para teste — verde/roxo vibrante." },
 ];
 
 const endscreenVariants: Variant[] = [
-  { id: "end-1", name: "Tela Final Clássica", img: endscreenImg, colors: defaultColors, description: "Design limpo e direto para focar nos vídeos recomendados." },
-  { id: "end-2", name: "Tela Final Dark", img: endscreenImg, colors: defaultColors, description: "Cores profundas para não cansar a vista do espectador." },
-  { id: "end-3", name: "Tela Final Colorida", img: endscreenImg, colors: defaultColors, description: "Vibrante e animada para reter a atenção." },
+  { id: "end-1", name: "Tela Final Lazzy", img: endImg1, colors: defaultColors, description: "Personagem em azul com dois slots de vídeo recomendado." },
+  { id: "end-2", name: "Tela Final Verde", img: endImg2, colors: defaultColors, description: "Fundo verde neon com personagem e hexágonos decorativos." },
+  { id: "end-3", name: "Tela Final Cinza", img: endImg3, colors: defaultColors, description: "Visual sóbrio azul/cinza com personagem elegante." },
 ];
 
 const thumbnailVariants: Variant[] = [
-  { id: "thm-1", name: "Thumb Impacto", img: thumbnailImg, colors: defaultColors, description: "Expressões exageradas e textos garrafais." },
-  { id: "thm-2", name: "Thumb Limpa", img: thumbnailImg, colors: defaultColors, description: "Minimalista, deixando o gameplay brilhar." },
-  { id: "thm-3", name: "Thumb Épica", img: thumbnailImg, colors: defaultColors, description: "Composição cinematográfica para vídeos de lore." },
-  { id: "thm-4", name: "Thumb Neon", img: thumbnailImg, colors: defaultColors, description: "Alto contraste para destacar no modo escuro do Youtube." },
+  { id: "thm-1", name: "One Piece no Mar", img: thumbImg1, colors: defaultColors, description: "Personagem em barco com cena de mar — épico e chamativo." },
+  { id: "thm-2", name: "Batalha Noturna", img: thumbImg2, colors: defaultColors, description: "Cena de batalha noturna com criatura e guerreiro — impacto total." },
+  { id: "thm-3", name: "Espaço Infinito", img: thumbImg3, colors: defaultColors, description: "Personagem entre planetas — thumbnail de exploração épica." },
+  { id: "thm-4", name: "Dia 1 vs Dia 100", img: thumbImg4, colors: defaultColors, description: "Comparativo clássico — formato que explode de cliques." },
+  { id: "thm-5", name: "Hive Live", img: thumbImg5, colors: defaultColors, description: "Thumbnail de live com personagem em ação e logo em destaque." },
 ];
 
 const prices = [
-  { name: "Icon", desc: "Foto de perfil personalizada em HD", price: "R$ 3,00", img: iconImg, href: "/icons" },
-  { name: "Banner", desc: "Arte épica para a capa do teu canal", price: "R$ 3,00", img: bannerImg, href: "/banners" },
-  { name: "Tela Final", desc: "Template de encerramento para YouTube", price: "R$ 4,00", img: endscreenImg, href: "/tela-final" },
-  { name: "Thumbnail", desc: "Capa chamativa para explodir as tuas views", price: "R$ 5,00", img: thumbnailImg, href: "/thumbnails" },
-  { name: "Pacote 3 Thumbnails", desc: "3 thumbnails com desconto especial", price: "R$ 12,50", img: thumbnailImg, href: "/thumbnails" },
-  { name: "Pacote 3 Icons", desc: "3 icons com desconto especial", price: "R$ 9,00", img: iconImg, href: "/icons" },
+  { name: "Icon", desc: "Foto de perfil personalizada em HD", price: "R$ 3,00", img: iconImg3, href: "/icons" },
+  { name: "Banner", desc: "Arte épica para a capa do teu canal", price: "R$ 3,00", img: bannerImg1, href: "/banners" },
+  { name: "Tela Final", desc: "Template de encerramento para YouTube", price: "R$ 4,00", img: endImg2, href: "/tela-final" },
+  { name: "Thumbnail", desc: "Capa chamativa para explodir as tuas views", price: "R$ 5,00", img: thumbImg1, href: "/thumbnails" },
+  { name: "Pacote 3 Thumbnails", desc: "3 thumbnails com desconto especial", price: "R$ 12,50", img: thumbImg3, href: "/thumbnails" },
+  { name: "Pacote 3 Icons", desc: "3 icons com desconto especial", price: "R$ 9,00", img: iconImg1, href: "/icons" },
 ];
 
 const team = [
@@ -91,7 +117,199 @@ const team = [
   { name: "AZUKI PIZZA", role: "Admin", img: azukiImg },
 ];
 
-// --- Components ---
+// --- Under Construction Screen ---
+
+function useCountdown(target: Date) {
+  const calc = () => {
+    const diff = Math.max(0, target.getTime() - Date.now());
+    return {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / (1000 * 60)) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+      done: diff === 0,
+    };
+  };
+  const [time, setTime] = useState(calc);
+  useEffect(() => {
+    const id = setInterval(() => setTime(calc()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
+function UnderConstruction({ onEnter }: { onEnter: () => void }) {
+  const { days, hours, minutes, seconds } = useCountdown(LAUNCH_DATE);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggleMute = () => {
+    setMuted((m) => {
+      if (videoRef.current) videoRef.current.muted = !m;
+      return !m;
+    });
+  };
+
+  const pads = (n: number) => String(n).padStart(2, "0");
+
+  const blocks = [
+    { label: "DIAS", val: pads(days) },
+    { label: "HORAS", val: pads(hours) },
+    { label: "MIN", val: pads(minutes) },
+    { label: "SEG", val: pads(seconds) },
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-[#050905]">
+      {/* Video background */}
+      <video
+        ref={videoRef}
+        src={`${import.meta.env.BASE_URL}billie-jean.mp4`}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-20"
+      />
+
+      {/* Green scanline overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(34,197,94,0.04) 3px, rgba(34,197,94,0.04) 4px)",
+        }}
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(34,197,94,0.08)_0%,_rgba(5,9,5,0.6)_70%)] pointer-events-none" />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6 gap-8 max-w-3xl w-full">
+        {/* Logo */}
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative"
+        >
+          <div className="absolute inset-0 blur-[60px] bg-[#22c55e]/40 rounded-full scale-150" />
+          <img
+            src={craftShopLogo}
+            alt="Craft Shop"
+            className="w-32 h-32 md:w-44 md:h-44 object-contain relative z-10 drop-shadow-[0_0_40px_rgba(34,197,94,0.8)]"
+          />
+        </motion.div>
+
+        {/* Title */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.7 }}
+          className="flex flex-col gap-3"
+        >
+          <div className="flex items-center justify-center gap-3">
+            <div className="h-px w-8 md:w-16 bg-[#22c55e]/50" />
+            <span className="font-mono text-xs text-[#22c55e] tracking-[0.3em] uppercase">Em Construção</span>
+            <div className="h-px w-8 md:w-16 bg-[#22c55e]/50" />
+          </div>
+          <h1
+            className="font-mono text-3xl md:text-5xl lg:text-6xl text-white leading-tight"
+            style={{ textShadow: "0 0 30px rgba(34,197,94,0.5)" }}
+          >
+            CRAFT SHOP<span className="text-[#22c55e]">®</span>
+          </h1>
+          <p className="text-[#22c55e]/80 font-mono text-sm md:text-base tracking-widest">
+            ALGO ÉPICO ESTÁ A CAMINHO
+          </p>
+        </motion.div>
+
+        {/* Countdown */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
+          className="grid grid-cols-4 gap-3 md:gap-6 w-full max-w-lg"
+        >
+          {blocks.map(({ label, val }) => (
+            <div
+              key={label}
+              className="flex flex-col items-center bg-[#0a140a] border border-[#22c55e]/30 p-3 md:p-5 relative"
+              style={{ boxShadow: "0 0 15px rgba(34,197,94,0.1), inset 0 0 20px rgba(34,197,94,0.03)" }}
+            >
+              <span
+                className="font-mono text-3xl md:text-5xl font-bold text-[#22c55e]"
+                style={{ textShadow: "0 0 20px rgba(34,197,94,0.8)" }}
+              >
+                {val}
+              </span>
+              <span className="font-mono text-[10px] text-[#22c55e]/50 tracking-widest mt-1">{label}</span>
+              {/* Corner decorations */}
+              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#22c55e]/60" />
+              <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-[#22c55e]/60" />
+              <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-[#22c55e]/60" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#22c55e]/60" />
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Description */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.7 }}
+          className="text-[#a0a8a0] text-sm md:text-base max-w-md leading-relaxed"
+        >
+          Estamos preparando algo incrível para o seu canal. Enquanto isso, entre no Discord para fazer seu pedido!
+        </motion.p>
+
+        {/* Buttons */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.6 }}
+          className="flex flex-col sm:flex-row gap-4 items-center"
+        >
+          <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer">
+            <Button
+              size="lg"
+              className="h-12 px-8 bg-[#22c55e] text-black hover:bg-[#16a34a] font-mono font-bold text-sm rounded-none"
+              style={{ boxShadow: "0 0 20px rgba(34,197,94,0.5)" }}
+            >
+              <MessageSquare className="w-4 h-4 mr-2" />
+              DISCORD
+            </Button>
+          </a>
+          <Button
+            onClick={onEnter}
+            variant="outline"
+            size="lg"
+            className="h-12 px-8 border-[#22c55e]/40 text-[#22c55e]/70 hover:bg-[#22c55e]/10 hover:text-[#22c55e] font-mono text-sm rounded-none bg-transparent"
+          >
+            Ver o Site →
+          </Button>
+        </motion.div>
+
+        {/* Mute toggle */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1 }}
+          onClick={toggleMute}
+          className="flex items-center gap-2 text-[#22c55e]/40 hover:text-[#22c55e]/70 transition-colors font-mono text-xs"
+        >
+          {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          {muted ? "ATIVAR SOM" : "SILENCIAR"}
+        </motion.button>
+      </div>
+
+      {/* Minecraft grass bottom decoration */}
+      <div className="absolute bottom-0 left-0 right-0 h-8 pointer-events-none">
+        <div className="w-full h-4 bg-[#22c55e]/20" />
+        <div className="w-full h-4 bg-[#5c4033]/20" />
+      </div>
+    </div>
+  );
+}
+
+// --- Product components ---
 
 function ColorSwatches({ colors, variantId }: { colors: string[]; variantId: string }) {
   const [active, setActive] = useState(colors[0]);
@@ -115,6 +333,7 @@ function ColorSwatches({ colors, variantId }: { colors: string[]; variantId: str
 }
 
 function ProductGallery({ title, description, variants, price }: { title: string; description: string; variants: Variant[]; price: string }) {
+  const isSquare = variants[0]?.id.startsWith("icon");
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-12">
@@ -125,7 +344,7 @@ function ProductGallery({ title, description, variants, price }: { title: string
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {variants.map((v) => (
           <Card key={v.id} data-testid={`card-variant-${v.id}`} className="bg-[#0f140f] border-primary/20 hover:border-primary transition-colors overflow-hidden group">
-            <div className="aspect-video w-full overflow-hidden border-b border-primary/20 relative">
+            <div className={`w-full overflow-hidden border-b border-primary/20 relative ${isSquare ? "aspect-square" : "aspect-video"}`}>
               <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
               <img src={v.img} alt={v.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute top-3 right-3 z-20">
@@ -137,10 +356,10 @@ function ProductGallery({ title, description, variants, price }: { title: string
             <CardContent className="p-6">
               <h3 className="text-xl font-bold font-sans mb-2 group-hover:text-primary transition-colors">{v.name}</h3>
               <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{v.description}</p>
-              
+
               <div className="mb-2 text-xs font-mono text-muted-foreground uppercase tracking-wider">Opções de cor:</div>
               <ColorSwatches colors={v.colors} variantId={v.id} />
-              
+
               <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="block w-full" data-testid={`link-discord-${v.id}`}>
                 <Button data-testid={`button-order-${v.id}`} className="w-full bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:text-black hover:border-primary transition-all font-mono text-xs box-glow">
                   ENCOMENDAR NO DISCORD
@@ -162,7 +381,7 @@ function HomePage() {
       {/* Hero */}
       <div className="relative overflow-hidden rounded-lg border border-primary/20 bg-[#0f140f] p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center gap-12">
         <div className="absolute inset-0 bg-primary/5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent pointer-events-none" />
-        
+
         <div className="flex-1 z-10 flex flex-col gap-6">
           <div className="inline-block px-4 py-2 border border-primary/30 bg-primary/10 w-fit">
             <span className="text-primary font-mono text-xs">O SEU CANAL MERECE O MELHOR</span>
@@ -189,7 +408,7 @@ function HomePage() {
             </div>
           </div>
         </div>
-        
+
         <div className="flex-1 z-10 w-full max-w-md relative">
           <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full" />
           <img src={logoImg} alt="Craft Shop" className="w-full h-auto object-contain drop-shadow-[0_0_60px_rgba(34,197,94,0.6)] hover:scale-105 transition-transform duration-500" />
@@ -201,10 +420,10 @@ function HomePage() {
         <h2 className="text-2xl font-mono mb-8 border-l-4 border-primary pl-4">ESCOLHA SEU PRODUTO</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { title: "ICONS", desc: "Sua marca registrada.", href: "/icons", icon: ImageIcon, img: iconImg },
-            { title: "BANNERS", desc: "A capa perfeita.", href: "/banners", icon: Layout, img: bannerImg },
-            { title: "TELA FINAL", desc: "Retenção máxima.", href: "/tela-final", icon: MonitorPlay, img: endscreenImg },
-            { title: "THUMBNAILS", desc: "Cliques garantidos.", href: "/thumbnails", icon: Youtube, img: thumbnailImg },
+            { title: "ICONS", desc: "Sua marca registrada.", href: "/icons", icon: ImageIcon, img: iconImg3 },
+            { title: "BANNERS", desc: "A capa perfeita.", href: "/banners", icon: Layout, img: bannerImg1 },
+            { title: "TELA FINAL", desc: "Retenção máxima.", href: "/tela-final", icon: MonitorPlay, img: endImg2 },
+            { title: "THUMBNAILS", desc: "Cliques garantidos.", href: "/thumbnails", icon: Youtube, img: thumbImg1 },
           ].map((item) => (
             <Link key={item.title} href={item.href} className="group block" data-testid={`link-quick-${item.title}`}>
               <Card className="bg-[#0f140f] border-primary/20 hover:border-primary transition-all overflow-hidden h-full">
@@ -237,22 +456,13 @@ function PricesPage() {
       <div className="grid gap-4">
         {prices.map((item, idx) => (
           <div key={idx} data-testid={`price-card-${idx}`} className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-[#0f140f] border border-primary/20 hover:border-primary transition-all duration-300 group overflow-hidden">
-            {/* Product image */}
             <div className="w-full sm:w-32 h-24 sm:h-20 shrink-0 overflow-hidden border border-primary/20 group-hover:border-primary/50 transition-colors">
-              <img
-                src={item.img}
-                alt={item.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+              <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             </div>
-
-            {/* Name + description */}
             <div className="flex-1 text-center sm:text-left">
               <span className="font-mono text-lg font-bold text-white block">{item.name}</span>
               <span className="text-sm text-muted-foreground">{item.desc}</span>
             </div>
-
-            {/* Price + button */}
             <div className="flex items-center gap-4 shrink-0">
               <span className="font-mono text-primary text-2xl tracking-tight" data-testid={`price-val-${idx}`}>{item.price}</span>
               <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" data-testid={`link-buy-${idx}`}>
@@ -288,7 +498,6 @@ function HowToBuyPage() {
 
       <div className="grid md:grid-cols-3 gap-8 relative max-w-5xl mx-auto">
         <div className="hidden md:block absolute top-12 left-10 right-10 h-[2px] bg-primary/20 z-0" />
-        
         {steps.map((s) => (
           <div key={s.step} className="relative z-10 flex flex-col items-center text-center p-8 bg-[#0f140f] border border-primary/30 box-glow rounded-lg">
             <div className="w-24 h-24 bg-primary text-black flex items-center justify-center font-mono text-4xl mb-8 rounded-full border-4 border-[#0f140f] shadow-[0_0_15px_rgba(34,197,94,0.4)]">
@@ -389,7 +598,7 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
         <div className="p-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={logoImg} alt="Craft Shop" className="w-10 h-10 object-contain shrink-0" />
-            <span className="font-mono text-sm tracking-wider text-primary text-glow leading-tight">CRAFT<br/>SHOP®</span>
+            <span className="font-mono text-sm tracking-wider text-primary text-glow leading-tight">CRAFT<br />SHOP®</span>
           </div>
           <button onClick={closeSidebar} className="md:hidden text-muted-foreground hover:text-white" aria-label="Close menu" data-testid="button-close-menu">
             <X className="w-5 h-5" />
@@ -406,8 +615,8 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
             return (
               <Link key={item.path} href={item.path!} onClick={closeSidebar} data-testid={`nav-${item.label}`}>
                 <span className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all group cursor-pointer ${
-                  active 
-                    ? "bg-primary/10 text-primary border-l-4 border-primary box-glow" 
+                  active
+                    ? "bg-primary/10 text-primary border-l-4 border-primary box-glow"
                     : "text-muted-foreground hover:bg-white/5 hover:text-white border-l-4 border-transparent"
                 }`}>
                   <Icon className={`w-5 h-5 ${active ? "text-primary" : "text-muted-foreground group-hover:text-white"}`} />
@@ -467,18 +676,52 @@ function Router() {
   );
 }
 
-// --- App ---
+// --- App Root ---
+
+function AppShell() {
+  const [entered, setEntered] = useState(false);
+
+  return (
+    <>
+      <AnimatePresence>
+        {!entered && (
+          <motion.div
+            key="construction"
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.5 }}
+          >
+            <UnderConstruction onEnter={() => setEntered(true)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {entered && (
+          <motion.div
+            key="site"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="contents"
+          >
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <LayoutWrapper>
+                <Router />
+              </LayoutWrapper>
+            </WouterRouter>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <LayoutWrapper>
-            <Router />
-          </LayoutWrapper>
-        </WouterRouter>
         <Toaster />
+        <AppShell />
       </TooltipProvider>
     </QueryClientProvider>
   );
