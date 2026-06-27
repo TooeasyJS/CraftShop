@@ -46,8 +46,8 @@ import azukiImg from "./assets/team-azuki.png";
 const queryClient = new QueryClient();
 const DISCORD_LINK = "https://discord.gg/J7bufuWvh";
 const LAUNCH_DATE = new Date("2026-08-01T00:00:00-03:00");
-const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID as string | undefined;
-const DISCORD_REDIRECT_URI = "https://ttooeasycraft-ui.github.io/CraftShop/";
+const DISCORD_CLIENT_ID = "1512253756014858420";
+const DISCORD_REDIRECT_URI = "https://tooeasyjs.github.io/CraftShop/";
 
 // --- Types ---
 interface Variant { id: string; name: string; img: string; colors: string[]; description: string; }
